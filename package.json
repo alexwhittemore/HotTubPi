@@ -1,0 +1,12 @@
+{
+    "name": "HotTubPi",
+    "description": "External heating controller for portable spas",
+    "version": "0.0.1",
+    "dependencies": {},
+    "node-red": {
+        "settings": {
+            "flowFile": "flows_raspberrypi.json",
+            "credentialsFile": "flows_raspberrypi_cred.json"
+        }
+    }
+}
