@@ -3,7 +3,7 @@
     "description": "External heating controller for portable spas",
     "version": "0.0.1",
     "dependencies": {
-        "node-red-dashboard": "2.15.5",
+        "node-red-dashboard": "3.2.0",
         "node-red-contrib-string": "0.2.2",
         "node-red-contrib-ds18b20-sensor": "1.3.6",
         "node-red-contrib-combine": "1.8.1"
