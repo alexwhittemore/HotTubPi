@@ -123,11 +123,12 @@
         "id": "b91905fa.f52fe8",
         "type": "ui_group",
         "name": "UI Group 1",
-        "tab": "26a95615.6e4daa",
+        "tab": "165a3bcd.750224",
         "order": 1,
         "disp": true,
         "width": "9",
-        "collapse": false
+        "collapse": false,
+        "className": ""
     },
     {
         "id": "8e49580a.2ff848",
@@ -203,7 +204,8 @@
                 "primary": "indigo",
                 "accents": "blue",
                 "warn": "red",
-                "background": "grey"
+                "background": "grey",
+                "palette": "light"
             }
         },
         "site": {
@@ -226,22 +228,23 @@
         }
     },
     {
-        "id": "26a95615.6e4daa",
+        "id": "2c9b1c26.c94c44",
+        "type": "ui_group",
+        "name": "UI Group 2",
+        "tab": "165a3bcd.750224",
+        "order": 2,
+        "disp": true,
+        "width": "3",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "165a3bcd.750224",
         "type": "ui_tab",
         "name": "Home",
         "icon": "dashboard",
         "disabled": false,
         "hidden": false
-    },
-    {
-        "id": "2c9b1c26.c94c44",
-        "type": "ui_group",
-        "name": "UI Group 2",
-        "tab": "26a95615.6e4daa",
-        "order": 2,
-        "disp": true,
-        "width": "3",
-        "collapse": false
     },
     {
         "id": "917c3c51.4a074",
@@ -254,7 +257,7 @@
         "y": 300,
         "wires": [
             [
-                "ef7e2c7d.0c9b7"
+                "63f5790a.d2b6a8"
             ]
         ]
     },
@@ -285,8 +288,7 @@
         "wires": [
             [
                 "917c3c51.4a074",
-                "ddccd0ae.6687",
-                "6160d5f0.0e670c"
+                "ddccd0ae.6687"
             ]
         ]
     },
@@ -327,10 +329,6 @@
         "y": 440,
         "wires": [
             [
-                "828adcbd.2b77a",
-                "4cb27032.ffee9",
-                "e756d972.8e5858",
-                "53ef0eb4.25e3",
                 "ed1fdeca.8f225"
             ]
         ]
@@ -777,8 +775,8 @@
         "name": "Water Temp Gauge",
         "group": "2c9b1c26.c94c44",
         "order": 1,
-        "width": "3",
-        "height": "2",
+        "width": 3,
+        "height": 2,
         "gtype": "gage",
         "title": "Water Temp",
         "label": "°F",
@@ -802,9 +800,9 @@
         "z": "b283f038.b3cfc",
         "name": "Enclosure Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 6,
-        "width": "0",
-        "height": "0",
+        "order": 5,
+        "width": 0,
+        "height": 0,
         "gtype": "gage",
         "title": "Enclosure Temp",
         "label": "°F",
@@ -828,9 +826,9 @@
         "z": "b283f038.b3cfc",
         "name": "Remote Air Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 8,
-        "width": "0",
-        "height": "0",
+        "order": 7,
+        "width": 0,
+        "height": 0,
         "gtype": "gage",
         "title": "Remote Air Temp",
         "label": "°F",
@@ -854,9 +852,9 @@
         "z": "b283f038.b3cfc",
         "name": "Close Air Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 9,
-        "width": "0",
-        "height": "0",
+        "order": 8,
+        "width": 0,
+        "height": 0,
         "gtype": "gage",
         "title": "Close Air Temp",
         "label": "°F",
@@ -873,35 +871,6 @@
         "x": 740,
         "y": 1040,
         "wires": []
-    },
-    {
-        "id": "bf4aa6df.3ec0b8",
-        "type": "ui_heater_controller",
-        "z": "b283f038.b3cfc",
-        "name": "Propane Heater",
-        "group": "b91905fa.f52fe8",
-        "unit": "F",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "topic": "propaneHeater",
-        "title": "",
-        "logLengthType": "days",
-        "logLength": "10",
-        "sliderMinValue": 10,
-        "sliderMaxValue": 104,
-        "sliderStep": 0.5,
-        "thresholdRising": 0.5,
-        "thresholdFalling": 1,
-        "calendar": "{\n    \"Monday\": {\n        \"00:00\": 50\n    },\n    \"Tuesday\": {\n        \"00:00\": 50\n    },\n    \"Wednesday\": {\n        \"00:00\": 50\n    },\n    \"Thursday\": {\n        \"00:00\": 50\n    },\n    \"Friday\": {\n        \"00:00\": 50\n    },\n    \"Saturday\": {\n        \"00:00\": 50\n    },\n    \"Sunday\": {\n        \"00:00\": 50\n    }\n}",
-        "x": 1380,
-        "y": 400,
-        "wires": [
-            [
-                "6ad07e45.2f2bf",
-                "f57917e2.592a58"
-            ]
-        ]
     },
     {
         "id": "1433cc39.acc8c4",
@@ -922,27 +891,14 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1210,
-        "y": 400,
+        "x": 1070,
+        "y": 380,
         "wires": [
             [
-                "bf4aa6df.3ec0b8"
+                "af64af8f.3ea97",
+                "7045e78a.90c438"
             ]
         ]
-    },
-    {
-        "id": "1bd5b9a6.461216",
-        "type": "rpi-gpio out",
-        "z": "b283f038.b3cfc",
-        "name": "Relay Output",
-        "pin": "16",
-        "set": true,
-        "level": "0",
-        "freq": "",
-        "out": "out",
-        "x": 1810,
-        "y": 400,
-        "wires": []
     },
     {
         "id": "ddccd0ae.6687",
@@ -1017,9 +973,9 @@
         "z": "b283f038.b3cfc",
         "name": "CPU Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 7,
-        "width": "0",
-        "height": "0",
+        "order": 6,
+        "width": 0,
+        "height": 0,
         "gtype": "gage",
         "title": "CPU Temp",
         "label": "°C",
@@ -1042,14 +998,19 @@
         "type": "function",
         "z": "b283f038.b3cfc",
         "name": "Manage Relay Output",
-        "func": "// Turn off and Disable relay if failure counter is high\nif (msg.count >= 10) {\n    flow.set(\"relay-enabled\", false)\n    return { payload:0 };\n}\n// If temperature sensing is valid, re-enable relay, but don't change value\nif (msg.reset) {\n    flow.set(\"relay-enabled\", true)\n    return\n}\n// If the message is from the Propane heater, turn on or off appropriately.\nif (msg.topic == \"propaneHeater\") {\n    if (msg.payload.currentHeaterStatus == \"on\" &&\n        flow.get(\"relay-enabled\"))\n    {\n        return { payload:1 };\n    } else {\n        return { payload:0 };\n    }\n}\n// Otherwise, do nothing.",
+        "func": "// Turn off and Disable relay if failure counter is high\nif (msg.count >= 10) {\n    flow.set(\"relay-enabled\", false)\n    return { payload:0 };\n}\n// If temperature sensing is valid, re-enable relay, but don't change value\nif (msg.reset) {\n    flow.set(\"relay-enabled\", true)\n    return\n}\n// If the message is from the Propane heater, turn on or off appropriately.\nif (msg.topic == \"propaneHeater\") {\n    if (msg.payload == \"on\" &&\n        flow.get(\"relay-enabled\") &&\n        flow.get(\"relay-enabled-blanking\"))\n    {\n        return { payload:1 };\n    } else {\n        return { payload:0 };\n    }\n}\n// Otherwise, do nothing.",
         "outputs": 1,
         "noerr": 0,
-        "x": 1620,
-        "y": 400,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1580,
+        "y": 380,
         "wires": [
             [
-                "1bd5b9a6.461216"
+                "ec60e2a3.d4174",
+                "dcb9bec6.fab22",
+                "8044db1d.e96d78"
             ]
         ]
     },
@@ -1134,8 +1095,8 @@
         "name": "5m mean heating rate gauge",
         "group": "2c9b1c26.c94c44",
         "order": 3,
-        "width": "3",
-        "height": "2",
+        "width": 3,
+        "height": 2,
         "gtype": "gage",
         "title": "5m Heating Rate (Mean)",
         "label": "°F/hr",
@@ -1531,8 +1492,8 @@
         "name": "Temp Failure Counter",
         "init": "0",
         "step": "1",
-        "lower": null,
-        "upper": null,
+        "lower": "",
+        "upper": "",
         "mode": "increment",
         "outputs": "1",
         "x": 1240,
@@ -1552,8 +1513,8 @@
         "name": "Water Temp Failure Count",
         "group": "2c9b1c26.c94c44",
         "order": 2,
-        "width": "3",
-        "height": "2",
+        "width": 3,
+        "height": 2,
         "gtype": "gage",
         "title": "Water Temp Failure Count",
         "label": "°F",
@@ -1636,6 +1597,8 @@
         "tostatus": false,
         "complete": "true",
         "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
         "x": 1550,
         "y": 300,
         "wires": []
@@ -1719,9 +1682,9 @@
         "z": "b283f038.b3cfc",
         "name": "5m Linear Regression Heating Rate",
         "group": "2c9b1c26.c94c44",
-        "order": 5,
-        "width": "3",
-        "height": "2",
+        "order": 4,
+        "width": 3,
+        "height": 2,
         "gtype": "gage",
         "title": "5m Linear Regression Heating Rate",
         "label": "°F/hr",
@@ -1745,7 +1708,7 @@
         "z": "b283f038.b3cfc",
         "name": "5m Linear Regression Heating Rate",
         "group": "b91905fa.f52fe8",
-        "order": 5,
+        "order": 4,
         "width": 0,
         "height": 0,
         "label": "5m Linear Regression Heating Rate",
@@ -1757,9 +1720,9 @@
         "dot": false,
         "ymin": "-10",
         "ymax": "16",
-        "removeOlder": "20",
+        "removeOlder": "2",
         "removeOlderPoints": "",
-        "removeOlderUnit": "60",
+        "removeOlderUnit": "3600",
         "cutout": 0,
         "useOneColor": false,
         "useUTC": false,
@@ -1776,6 +1739,7 @@
         ],
         "outputs": 1,
         "useDifferentColor": false,
+        "className": "",
         "x": 2640,
         "y": 800,
         "wires": [
@@ -1840,24 +1804,6 @@
         ]
     },
     {
-        "id": "6160d5f0.0e670c",
-        "type": "pimax31865",
-        "z": "b283f038.b3cfc",
-        "name": "waterTemp",
-        "bus": 0,
-        "dev": 0,
-        "rtd": 1000,
-        "ref": 4300,
-        "wir": "3",
-        "x": 210,
-        "y": 20,
-        "wires": [
-            [
-                "63f5790a.d2b6a8"
-            ]
-        ]
-    },
-    {
         "id": "5893ebd0.0a3524",
         "type": "debug",
         "z": "b283f038.b3cfc",
@@ -1870,7 +1816,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 470,
+        "x": 450,
         "y": 200,
         "wires": []
     },
@@ -1879,7 +1825,7 @@
         "type": "function",
         "z": "b283f038.b3cfc",
         "name": "C to F",
-        "func": "tempc = parseFloat(msg.payload);\n//node.warn(tempc)\ntempc += 1.08\n//node.warn(tempc)\ntempf = tempc*1.8+32;\n// round to xxx.xx\ntempf = Math.round(tempf*100)/100;\nmsg.payload = tempf;\nreturn msg;",
+        "func": "tempc = parseFloat(msg.payload);\n//node.warn(tempc)\n//tempc += 1.08\n//node.warn(tempc)\ntempf = tempc*1.8+32;\n// round to xxx.xx\ntempf = Math.round(tempf*100)/100;\nmsg.payload = tempf;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2014,8 +1960,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 230,
-        "y": 60,
+        "x": 350,
+        "y": 40,
         "wires": [
             [
                 "4725e0f.0a0842",
@@ -2045,7 +1991,7 @@
         "type": "regression",
         "z": "b283f038.b3cfc",
         "name": "",
-        "dataSetSize": "60",
+        "dataSetSize": "120",
         "regressionType": "linear",
         "polynomialOrder": 2,
         "precision": 2,
@@ -2111,6 +2057,253 @@
         "statusType": "auto",
         "x": 2230,
         "y": 840,
+        "wires": []
+    },
+    {
+        "id": "af64af8f.3ea97",
+        "type": "ui_heater_controller",
+        "z": "b283f038.b3cfc",
+        "name": "heater",
+        "group": "b91905fa.f52fe8",
+        "unit": "F",
+        "displayMode": "slider",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "topic": "propaneHeater",
+        "title": "Heater",
+        "logLength": 0,
+        "sliderMinValue": 10,
+        "sliderMaxValue": 104,
+        "sliderStep": 0.5,
+        "threshold": 0.5,
+        "calendar": "{\n    \"Monday\": {\n        \"00:00\": 10\n    },\n    \"Tuesday\": {\n        \"00:00\": 10\n    },\n    \"Wednesday\": {\n        \"00:00\": 10\n    },\n    \"Thursday\": {\n        \"00:00\": 10\n    },\n    \"Friday\": {\n        \"00:00\": 10\n    },\n    \"Saturday\": {\n        \"00:00\": 10,\n        \"07:00\": 11,\n        \"10:00\": 10\n    },\n    \"Sunday\": {\n        \"00:00\": 10\n    }\n}",
+        "x": 1270,
+        "y": 380,
+        "wires": [
+            [
+                "f57917e2.592a58",
+                "6ad07e45.2f2bf"
+            ],
+            []
+        ],
+        "inputLabels": [
+            "currentTemp | userConfig | setCalendar | config | status"
+        ],
+        "outputLabels": [
+            "Heater status",
+            "Info"
+        ],
+        "info": "Description"
+    },
+    {
+        "id": "ec60e2a3.d4174",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1850,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "dcb9bec6.fab22",
+        "type": "rpi-gpio out",
+        "z": "b283f038.b3cfc",
+        "name": "Heat Relay",
+        "pin": "23",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 1890,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "7045e78a.90c438",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "9e946746.ac7c08",
+        "type": "trigger",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "op1": "false",
+        "op2": "true",
+        "op1type": "bool",
+        "op2type": "bool",
+        "duration": "6",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 1110,
+        "y": 140,
+        "wires": [
+            [
+                "cb83e1a8.de00e"
+            ]
+        ]
+    },
+    {
+        "id": "cb83e1a8.de00e",
+        "type": "change",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "relay-enabled-blanking",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "relay-enabled-blanking",
+                "pt": "msg",
+                "to": "relay-enabled-blanking",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1330,
+        "y": 140,
+        "wires": [
+            [
+                "6cdd58c6.d9a918"
+            ]
+        ]
+    },
+    {
+        "id": "3ddfadd1.a1f332",
+        "type": "inject",
+        "z": "b283f038.b3cfc",
+        "name": "10min",
+        "props": [
+            {
+                "p": "timestamp",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "10minblanking",
+        "x": 960,
+        "y": 140,
+        "wires": [
+            [
+                "9e946746.ac7c08"
+            ]
+        ]
+    },
+    {
+        "id": "6cdd58c6.d9a918",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1590,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "719c8825.55f7f8",
+        "type": "comment",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "info": "This line inhibits the relay output for 6s every 10 minutes to defeat the heater's built-in maximum on time.",
+        "x": 940,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "9e244ac6.ea3318",
+        "type": "rpi-gpio out",
+        "z": "b283f038.b3cfc",
+        "name": "Filter Relay",
+        "pin": "22",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 2130,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "8044db1d.e96d78",
+        "type": "function",
+        "z": "b283f038.b3cfc",
+        "name": "Enable between 7am to 9am",
+        "func": "// If upstream (the heater) says turn on, then turn on.\n\nif (msg.payload == 1) {\n    return msg\n} else {\n    // Heater doesn't want us on, but check the time of day to see if we should override\n    // Get current time\n    var d=new Date();\n    var hour = d.getHours();\n    if (hour>=7 && hour <9){\n        return { payload:1 };\n    } else {\n        return { payload:0 }\n    }\n}\n\n\n\n\n\n\n\n// if (msg.count >= 10) {\n//     flow.set(\"relay-enabled\", false)\n//     return { payload:0 };\n// }\n// // If temperature sensing is valid, re-enable relay, but don't change value\n// if (msg.reset) {\n//     flow.set(\"relay-enabled\", true)\n//     return\n// }\n// // If the message is from the Propane heater, turn on or off appropriately.\n// if (msg.topic == \"propaneHeater\") {\n//     if (msg.payload == \"on\" &&\n//         flow.get(\"relay-enabled\") &&\n//         flow.get(\"relay-enabled-blanking\"))\n//     {\n//         return { payload:1 };\n//     } else {\n//         return { payload:0 };\n//     }\n// }\n// Otherwise, do nothing.",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1900,
+        "y": 460,
+        "wires": [
+            [
+                "9e244ac6.ea3318",
+                "259539f3.543406"
+            ]
+        ]
+    },
+    {
+        "id": "259539f3.543406",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 2110,
+        "y": 400,
         "wires": []
     }
 ]
