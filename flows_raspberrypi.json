@@ -125,8 +125,8 @@
         "name": "UI Group 1",
         "tab": "165a3bcd.750224",
         "order": 1,
-        "disp": true,
-        "width": "9",
+        "disp": false,
+        "width": "10",
         "collapse": false,
         "className": ""
     },
@@ -210,7 +210,7 @@
         },
         "site": {
             "name": "Node-RED Dashboard",
-            "hideToolbar": "false",
+            "hideToolbar": "true",
             "allowSwipe": "false",
             "lockMenu": "false",
             "allowTempTheme": "true",
@@ -231,10 +231,10 @@
         "id": "2c9b1c26.c94c44",
         "type": "ui_group",
         "name": "UI Group 2",
-        "tab": "165a3bcd.750224",
+        "tab": "8198ab8.45d3e58",
         "order": 2,
-        "disp": true,
-        "width": "3",
+        "disp": false,
+        "width": 9,
         "collapse": false,
         "className": ""
     },
@@ -243,8 +243,58 @@
         "type": "ui_tab",
         "name": "Home",
         "icon": "dashboard",
+        "order": 1,
         "disabled": false,
         "hidden": false
+    },
+    {
+        "id": "8198ab8.45d3e58",
+        "type": "ui_tab",
+        "name": "Gauges",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "168dff91.54ffd",
+        "type": "ui_spacer",
+        "z": "b283f038.b3cfc",
+        "name": "spacer",
+        "group": "2c9b1c26.c94c44",
+        "order": 4,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "61df3a55.8ed3c4",
+        "type": "ui_spacer",
+        "z": "b283f038.b3cfc",
+        "name": "spacer",
+        "group": "2c9b1c26.c94c44",
+        "order": 6,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "690817b6.f82858",
+        "type": "ui_spacer",
+        "z": "b283f038.b3cfc",
+        "name": "spacer",
+        "group": "b91905fa.f52fe8",
+        "order": 1,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "64be82f8.0a27d4",
+        "type": "ui_spacer",
+        "z": "b283f038.b3cfc",
+        "name": "spacer",
+        "group": "b91905fa.f52fe8",
+        "order": 1,
+        "width": 1,
+        "height": 1
     },
     {
         "id": "917c3c51.4a074",
@@ -800,7 +850,7 @@
         "z": "b283f038.b3cfc",
         "name": "Enclosure Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 5,
+        "order": 8,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -826,7 +876,7 @@
         "z": "b283f038.b3cfc",
         "name": "Remote Air Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 7,
+        "order": 9,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -852,7 +902,7 @@
         "z": "b283f038.b3cfc",
         "name": "Close Air Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 8,
+        "order": 10,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -973,7 +1023,7 @@
         "z": "b283f038.b3cfc",
         "name": "CPU Temp Gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 6,
+        "order": 7,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -998,7 +1048,7 @@
         "type": "function",
         "z": "b283f038.b3cfc",
         "name": "Manage Relay Output",
-        "func": "// Turn off and Disable relay if failure counter is high\nif (msg.count >= 10) {\n    flow.set(\"relay-enabled\", false)\n    return { payload:0 };\n}\n// If temperature sensing is valid, re-enable relay, but don't change value\nif (msg.reset) {\n    flow.set(\"relay-enabled\", true)\n    return\n}\n// If the message is from the Propane heater, turn on or off appropriately.\nif (msg.topic == \"propaneHeater\") {\n    if (msg.payload == \"on\" &&\n        flow.get(\"relay-enabled\") &&\n        flow.get(\"relay-enabled-blanking\"))\n    {\n        return { payload:1 };\n    } else {\n        return { payload:0 };\n    }\n}\n// Otherwise, do nothing.",
+        "func": "// Turn off and Disable relay if failure counter is high\nif (msg.count >= 10) {\n    flow.set(\"relay-enabled\", false)\n    return { payload:0 };\n}\n// If temperature sensing is valid, re-enable relay, but don't change value\nif (msg.reset) {\n    flow.set(\"relay-enabled\", true)\n    return\n}\n// If the message is from the Propane heater, turn on or off appropriately.\nif (msg.topic == \"propaneHeater\") {\n    if (msg.payload == \"on\" &&\n        flow.get(\"relay-enabled\") &&\n        flow.get(\"relay-enabled-blanking\"))\n    {\n        msg.payload = 1\n        return msg;\n    } else {\n        msg.payload = 0\n        return msg;\n    }\n}\n// Otherwise, do nothing.",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1020,7 +1070,7 @@
         "z": "b283f038.b3cfc",
         "name": "Water Temp Chart",
         "group": "b91905fa.f52fe8",
-        "order": 2,
+        "order": 3,
         "width": 0,
         "height": 0,
         "label": "Water Temp (8h)",
@@ -1094,7 +1144,7 @@
         "z": "b283f038.b3cfc",
         "name": "5m mean heating rate gauge",
         "group": "2c9b1c26.c94c44",
-        "order": 3,
+        "order": 2,
         "width": 3,
         "height": 2,
         "gtype": "gage",
@@ -1120,7 +1170,7 @@
         "z": "b283f038.b3cfc",
         "name": "",
         "group": "b91905fa.f52fe8",
-        "order": 3,
+        "order": 4,
         "width": 0,
         "height": 0,
         "label": "5m Heating Rate History (Mean)",
@@ -1496,8 +1546,8 @@
         "upper": "",
         "mode": "increment",
         "outputs": "1",
-        "x": 1240,
-        "y": 240,
+        "x": 1200,
+        "y": 220,
         "wires": [
             [
                 "fbd64763.24d848",
@@ -1512,7 +1562,7 @@
         "z": "b283f038.b3cfc",
         "name": "Water Temp Failure Count",
         "group": "2c9b1c26.c94c44",
-        "order": 2,
+        "order": 5,
         "width": 3,
         "height": 2,
         "gtype": "gage",
@@ -1682,7 +1732,7 @@
         "z": "b283f038.b3cfc",
         "name": "5m Linear Regression Heating Rate",
         "group": "2c9b1c26.c94c44",
-        "order": 4,
+        "order": 3,
         "width": 3,
         "height": 2,
         "gtype": "gage",
@@ -1708,7 +1758,7 @@
         "z": "b283f038.b3cfc",
         "name": "5m Linear Regression Heating Rate",
         "group": "b91905fa.f52fe8",
-        "order": 4,
+        "order": 5,
         "width": 0,
         "height": 0,
         "label": "5m Linear Regression Heating Rate",
@@ -2067,9 +2117,9 @@
         "group": "b91905fa.f52fe8",
         "unit": "F",
         "displayMode": "slider",
-        "order": 1,
-        "width": 0,
-        "height": 0,
+        "order": 2,
+        "width": "10",
+        "height": "4",
         "topic": "propaneHeater",
         "title": "Heater",
         "logLength": 0,
@@ -2107,8 +2157,8 @@
         "tostatus": false,
         "complete": "true",
         "targetType": "full",
-        "x": 1850,
-        "y": 340,
+        "x": 1790,
+        "y": 260,
         "wires": []
     },
     {
@@ -2122,8 +2172,8 @@
         "freq": "",
         "out": "out",
         "bcm": true,
-        "x": 1890,
-        "y": 400,
+        "x": 2050,
+        "y": 240,
         "wires": []
     },
     {
@@ -2267,8 +2317,8 @@
         "freq": "",
         "out": "out",
         "bcm": true,
-        "x": 2130,
-        "y": 460,
+        "x": 2610,
+        "y": 440,
         "wires": []
     },
     {
@@ -2282,12 +2332,12 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1900,
-        "y": 460,
+        "x": 1920,
+        "y": 440,
         "wires": [
             [
-                "9e244ac6.ea3318",
-                "259539f3.543406"
+                "c78ecb7d.16d0a8",
+                "c70fdbc4.aa8e18"
             ]
         ]
     },
@@ -2302,7 +2352,96 @@
         "tostatus": false,
         "complete": "true",
         "targetType": "full",
-        "x": 2110,
+        "x": 2510,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "c1f73c47.750f2",
+        "type": "ui_switch",
+        "z": "b283f038.b3cfc",
+        "name": "Filter Pump Switch",
+        "label": "Filter Pump",
+        "tooltip": "",
+        "group": "b91905fa.f52fe8",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 2390,
+        "y": 440,
+        "wires": [
+            [
+                "9e244ac6.ea3318",
+                "259539f3.543406"
+            ]
+        ]
+    },
+    {
+        "id": "c78ecb7d.16d0a8",
+        "type": "rbe",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": false,
+        "property": "payload",
+        "x": 2150,
+        "y": 440,
+        "wires": [
+            [
+                "c1f73c47.750f2"
+            ]
+        ]
+    },
+    {
+        "id": "c70fdbc4.aa8e18",
+        "type": "switch",
+        "z": "b283f038.b3cfc",
+        "name": "Forward if 1",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2170,
+        "y": 480,
+        "wires": [
+            [
+                "c1f73c47.750f2"
+            ]
+        ]
+    },
+    {
+        "id": "92e430fd.53c68",
+        "type": "comment",
+        "z": "b283f038.b3cfc",
+        "name": "Command off only on state change, but on always if needed",
+        "info": "Command the pump switch off ONLY on a state change, but command it on always so the user can't do a dumb and turn it off while the heater is running (for more than 5s)",
+        "x": 2160,
         "y": 400,
         "wires": []
     }
