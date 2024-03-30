@@ -105,19 +105,26 @@
         "port": "8883",
         "tls": "63b82050.c1a16",
         "clientid": "",
+        "autoConnect": true,
         "usetls": true,
-        "compatmode": true,
+        "protocolVersion": "4",
         "keepalive": "60",
         "cleansession": true,
+        "autoUnsubscribe": true,
         "birthTopic": "",
         "birthQos": "0",
         "birthPayload": "",
+        "birthMsg": {},
         "closeTopic": "",
         "closeQos": "0",
         "closePayload": "",
+        "closeMsg": {},
         "willTopic": "",
         "willQos": "0",
-        "willPayload": ""
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
     },
     {
         "id": "b91905fa.f52fe8",
@@ -297,6 +304,98 @@
         "height": 1
     },
     {
+        "id": "5d9ecdcdae1f3406",
+        "type": "mqtt-broker",
+        "name": "Home Assistant",
+        "broker": "hass.home",
+        "port": "1883",
+        "clientid": "hottub1",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "394def51.e6d93",
+        "type": "switch",
+        "z": "898e8f9a.f49db",
+        "name": "Range Check",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "Lower Limit",
+                "vt": "env",
+                "v2": "Upper Limit",
+                "v2t": "env"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 220,
+        "y": 40,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "21b14290.b907ae",
+        "type": "function",
+        "z": "5c2d8da3.0f1534",
+        "name": "date, time, temp",
+        "func": "//var time = new Date().toLocaleString(\"en-US\", {timeZone: \"America/Los_Angeles\"})\n\n// Parse our locale string to [date, time]\nvar date = new Date().toLocaleString('en-US',{hour12:false,timeZone: \"America/Los_Angeles\"}).split(\" \");\n\n// Now we can access our time at date[1], and monthdayyear @ date[0]\nvar time = date[1];\nvar mdy = date[0];\n\nvar temp = msg.payload;\n\nvar newmsg = {payload: (mdy + time + \",\" + temp)};\nreturn newmsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 180,
+        "wires": [
+            [
+                "4adc0e16.74db9"
+            ]
+        ]
+    },
+    {
+        "id": "4adc0e16.74db9",
+        "type": "file",
+        "z": "5c2d8da3.0f1534",
+        "name": "",
+        "filename": "/home/pi/tubtemp.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 600,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "917c3c51.4a074",
         "type": "rpi-ds18b20",
         "z": "b283f038.b3cfc",
@@ -307,7 +406,8 @@
         "y": 300,
         "wires": [
             [
-                "63f5790a.d2b6a8"
+                "06a061e906895715",
+                "a1fd6681fd0025d0"
             ]
         ]
     },
@@ -741,11 +841,13 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": true,
+        "outputs": 1,
         "x": 1190,
         "y": 440,
         "wires": [
             [
-                "ae53367.1ad2ec8"
+                "ae53367.1ad2ec8",
+                "90d698ac6cf527ed"
             ]
         ]
     },
@@ -764,6 +866,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": true,
+        "outputs": 1,
         "x": 690,
         "y": 640,
         "wires": [
@@ -787,6 +890,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": true,
+        "outputs": 1,
         "x": 690,
         "y": 800,
         "wires": [
@@ -810,6 +914,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": true,
+        "outputs": 1,
         "x": 690,
         "y": 960,
         "wires": [
@@ -840,6 +945,7 @@
         ],
         "seg1": "90",
         "seg2": "101",
+        "className": "",
         "x": 2590,
         "y": 660,
         "wires": []
@@ -1087,6 +1193,7 @@
         "removeOlderUnit": "3600",
         "cutout": 0,
         "useOneColor": false,
+        "useUTC": false,
         "colors": [
             "#1f77b4",
             "#aec7e8",
@@ -1099,6 +1206,8 @@
             "#c5b0d5"
         ],
         "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
         "x": 2590,
         "y": 700,
         "wires": [
@@ -1216,8 +1325,8 @@
         "defer": "0",
         "timeout": "300000",
         "distinction": "_msgid",
-        "x": 1460,
-        "y": 540,
+        "x": 1450,
+        "y": 600,
         "wires": [
             [
                 "55215ffb.b925d"
@@ -1259,8 +1368,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1740,
-        "y": 520,
+        "x": 1730,
+        "y": 580,
         "wires": [
             [
                 "e4d38b64.8e68f8"
@@ -1282,6 +1391,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
+        "outputs": 1,
         "x": 1900,
         "y": 520,
         "wires": [
@@ -1307,8 +1417,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1590,
-        "y": 540,
+        "x": 1580,
+        "y": 600,
         "wires": [
             [
                 "38642d44.c5d2b2",
@@ -1349,35 +1459,6 @@
         ]
     },
     {
-        "id": "394def51.e6d93",
-        "type": "switch",
-        "z": "898e8f9a.f49db",
-        "name": "Range Check",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "btwn",
-                "v": "Lower Limit",
-                "vt": "env",
-                "v2": "Upper Limit",
-                "v2t": "env"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "repair": false,
-        "outputs": 2,
-        "x": 220,
-        "y": 40,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
         "id": "9a616191.00de5",
         "type": "subflow:898e8f9a.f49db",
         "z": "b283f038.b3cfc",
@@ -1399,38 +1480,6 @@
                 "ef60201d.6366a",
                 "8792c750.ed1ba8"
             ]
-        ]
-    },
-    {
-        "id": "21b14290.b907ae",
-        "type": "function",
-        "z": "5c2d8da3.0f1534",
-        "name": "date, time, temp",
-        "func": "//var time = new Date().toLocaleString(\"en-US\", {timeZone: \"America/Los_Angeles\"})\n\n// Parse our locale string to [date, time]\nvar date = new Date().toLocaleString('en-US',{hour12:false,timeZone: \"America/Los_Angeles\"}).split(\" \");\n\n// Now we can access our time at date[1], and monthdayyear @ date[0]\nvar time = date[1];\nvar mdy = date[0];\n\nvar temp = msg.payload;\n\nvar newmsg = {payload: (mdy + time + \",\" + temp)};\nreturn newmsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 360,
-        "y": 180,
-        "wires": [
-            [
-                "4adc0e16.74db9"
-            ]
-        ]
-    },
-    {
-        "id": "4adc0e16.74db9",
-        "type": "file",
-        "z": "5c2d8da3.0f1534",
-        "name": "",
-        "filename": "/home/pi/tubtemp.txt",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "false",
-        "encoding": "none",
-        "x": 600,
-        "y": 180,
-        "wires": [
-            []
         ]
     },
     {
@@ -1542,8 +1591,8 @@
         "name": "Temp Failure Counter",
         "init": "0",
         "step": "1",
-        "lower": "",
-        "upper": "",
+        "lower": null,
+        "upper": null,
         "mode": "increment",
         "outputs": "1",
         "x": 1200,
@@ -1703,6 +1752,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": true,
+        "outputs": 1,
         "x": 2170,
         "y": 540,
         "wires": [
@@ -1802,8 +1852,8 @@
         "z": "b283f038.b3cfc",
         "name": "5m mean filter 5m delta",
         "info": "5M Mean filter\n",
-        "x": 1500,
-        "y": 500,
+        "x": 1490,
+        "y": 560,
         "wires": []
     },
     {
@@ -1881,12 +1931,11 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 290,
-        "y": 240,
+        "x": 310,
+        "y": 40,
         "wires": [
             [
-                "5893ebd0.0a3524",
-                "9a616191.00de5"
+                "95da34ee853df77a"
             ]
         ]
     },
@@ -1902,7 +1951,7 @@
         "complete": "true",
         "targetType": "full",
         "x": 1350,
-        "y": 600,
+        "y": 660,
         "wires": []
     },
     {
@@ -1920,23 +1969,6 @@
         "statusType": "auto",
         "x": 910,
         "y": 480,
-        "wires": []
-    },
-    {
-        "id": "4725e0f.0a0842",
-        "type": "debug",
-        "z": "b283f038.b3cfc",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
-        "y": 160,
         "wires": []
     },
     {
@@ -2010,11 +2042,10 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 350,
+        "x": 150,
         "y": 40,
         "wires": [
             [
-                "4725e0f.0a0842",
                 "cdbf7e24.8b309"
             ]
         ]
@@ -2326,8 +2357,9 @@
         "type": "function",
         "z": "b283f038.b3cfc",
         "name": "Enable between 7am to 9am",
-        "func": "// If upstream (the heater) says turn on, then turn on.\n\nif (msg.payload == 1) {\n    return msg\n} else {\n    // Heater doesn't want us on, but check the time of day to see if we should override\n    // Get current time\n    var d=new Date();\n    var hour = d.getHours();\n    if (hour>=7 && hour <9){\n        return { payload:1 };\n    } else {\n        return { payload:0 }\n    }\n}\n\n\n\n\n\n\n\n// if (msg.count >= 10) {\n//     flow.set(\"relay-enabled\", false)\n//     return { payload:0 };\n// }\n// // If temperature sensing is valid, re-enable relay, but don't change value\n// if (msg.reset) {\n//     flow.set(\"relay-enabled\", true)\n//     return\n// }\n// // If the message is from the Propane heater, turn on or off appropriately.\n// if (msg.topic == \"propaneHeater\") {\n//     if (msg.payload == \"on\" &&\n//         flow.get(\"relay-enabled\") &&\n//         flow.get(\"relay-enabled-blanking\"))\n//     {\n//         return { payload:1 };\n//     } else {\n//         return { payload:0 };\n//     }\n// }\n// Otherwise, do nothing.",
+        "func": "// If upstream (the heater) says turn on, then turn on.\n\nif (msg.payload == 1) {\n    return msg\n} else {\n    // Heater doesn't want us on, but check the time of day to see if we should override\n    // Get current time\n    var d=new Date();\n    var hour = d.getHours();\n    if (hour>=7 && hour <9){\n        return { payload:0 }; // Disabled for now while I work on solar\n        return { payload:1 };\n    } else {\n        return { payload:0 }\n    }\n}\n\n\n\n\n\n\n\n// if (msg.count >= 10) {\n//     flow.set(\"relay-enabled\", false)\n//     return { payload:0 };\n// }\n// // If temperature sensing is valid, re-enable relay, but don't change value\n// if (msg.reset) {\n//     flow.set(\"relay-enabled\", true)\n//     return\n// }\n// // If the message is from the Propane heater, turn on or off appropriately.\n// if (msg.topic == \"propaneHeater\") {\n//     if (msg.payload == \"on\" &&\n//         flow.get(\"relay-enabled\") &&\n//         flow.get(\"relay-enabled-blanking\"))\n//     {\n//         return { payload:1 };\n//     } else {\n//         return { payload:0 };\n//     }\n// }\n// Otherwise, do nothing.",
         "outputs": 1,
+        "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -2443,6 +2475,146 @@
         "info": "Command the pump switch off ONLY on a state change, but command it on always so the user can't do a dumb and turn it off while the heater is running (for more than 5s)",
         "x": 2160,
         "y": 400,
+        "wires": []
+    },
+    {
+        "id": "90d698ac6cf527ed",
+        "type": "mqtt out",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "topic": "hottub/temperature",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5d9ecdcdae1f3406",
+        "x": 1470,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "95da34ee853df77a",
+        "type": "switch",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "property": "dir",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "w1_bus_master1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "w1_bus_master2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 430,
+        "y": 40,
+        "wires": [
+            [
+                "9a616191.00de5"
+            ],
+            [
+                "25366bdf9228468b",
+                "39b13a2c.0f2ed6",
+                "5893ebd0.0a3524"
+            ]
+        ]
+    },
+    {
+        "id": "25366bdf9228468b",
+        "type": "delay",
+        "z": "b283f038.b3cfc",
+        "name": "1/20s",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "20",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 630,
+        "y": 40,
+        "wires": [
+            [
+                "a1de56d201df5d1c"
+            ]
+        ]
+    },
+    {
+        "id": "a1de56d201df5d1c",
+        "type": "mqtt out",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "topic": "hottub/solar-temperature",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5d9ecdcdae1f3406",
+        "x": 850,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "a1fd6681fd0025d0",
+        "type": "switch",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 270,
+        "y": 300,
+        "wires": [
+            [
+                "63f5790a.d2b6a8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "06a061e906895715",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 270,
+        "y": 240,
         "wires": []
     }
 ]
