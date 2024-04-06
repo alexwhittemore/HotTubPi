@@ -1473,7 +1473,8 @@
                 "fc5872e5.4e6cf",
                 "891fbdcf.25db7",
                 "4c330bf4.2b3cf4",
-                "aed2ae8.87e775"
+                "aed2ae8.87e775",
+                "4804483fc8c3b376"
             ],
             [
                 "ef60201d.6366a",
@@ -1904,23 +1905,6 @@
         ]
     },
     {
-        "id": "5893ebd0.0a3524",
-        "type": "debug",
-        "z": "b283f038.b3cfc",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 450,
-        "y": 200,
-        "wires": []
-    },
-    {
         "id": "cdbf7e24.8b309",
         "type": "function",
         "z": "b283f038.b3cfc",
@@ -2035,6 +2019,24 @@
                 "pt": "msg",
                 "to": "",
                 "tot": "date"
+            },
+            {
+                "t": "change",
+                "p": "topic",
+                "pt": "msg",
+                "from": "3DAFCE56230B",
+                "fromt": "str",
+                "to": "SolarTemp",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "topic",
+                "pt": "msg",
+                "from": "FF0B43001601",
+                "fromt": "str",
+                "to": "TubTemp",
+                "tot": "str"
             }
         ],
         "action": "",
@@ -2042,7 +2044,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 150,
+        "x": 140,
         "y": 40,
         "wires": [
             [
@@ -2203,8 +2205,8 @@
         "freq": "",
         "out": "out",
         "bcm": true,
-        "x": 2050,
-        "y": 240,
+        "x": 1850,
+        "y": 340,
         "wires": []
     },
     {
@@ -2301,7 +2303,7 @@
         ],
         "repeat": "600",
         "crontab": "",
-        "once": false,
+        "once": true,
         "onceDelay": 0.1,
         "topic": "10minblanking",
         "x": 960,
@@ -2427,14 +2429,15 @@
         "id": "c78ecb7d.16d0a8",
         "type": "rbe",
         "z": "b283f038.b3cfc",
-        "name": "",
+        "name": "On Change",
         "func": "rbe",
         "gap": "",
         "start": "",
         "inout": "out",
         "septopics": false,
         "property": "payload",
-        "x": 2150,
+        "topi": "topic",
+        "x": 2170,
         "y": 440,
         "wires": [
             [
@@ -2526,7 +2529,8 @@
             [
                 "25366bdf9228468b",
                 "39b13a2c.0f2ed6",
-                "5893ebd0.0a3524"
+                "1d6459adfd551ed7",
+                "e3dc1971d7fd5de3"
             ]
         ]
     },
@@ -2615,6 +2619,359 @@
         "targetType": "full",
         "x": 270,
         "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9408b0228e222cd6",
+        "type": "ui_switch",
+        "z": "b283f038.b3cfc",
+        "name": "Solar Heating Switch",
+        "label": "Solar Heating",
+        "tooltip": "",
+        "group": "b91905fa.f52fe8",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "SolarSwitch",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1940,
+        "y": 60,
+        "wires": [
+            [
+                "91b7e87dfb8b568b"
+            ]
+        ]
+    },
+    {
+        "id": "d27c6a22d0ff1a02",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1950,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "1d6459adfd551ed7",
+        "type": "function",
+        "z": "b283f038.b3cfc",
+        "name": "Sub 10",
+        "func": "msg.payload = msg.payload-10\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1140,
+        "y": 20,
+        "wires": [
+            [
+                "4804483fc8c3b376"
+            ]
+        ]
+    },
+    {
+        "id": "4804483fc8c3b376",
+        "type": "combine-delta",
+        "z": "b283f038.b3cfc",
+        "topic": "",
+        "topicA": "SolarTemp",
+        "topicB": "TubTemp",
+        "name": "Solar Excess Temp",
+        "x": 1330,
+        "y": 20,
+        "wires": [
+            [
+                "2a339a5adbe4bc58",
+                "04b9183b020e6928"
+            ]
+        ]
+    },
+    {
+        "id": "e3dc1971d7fd5de3",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 630,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e04c1af44688a55c",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 2150,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "2a339a5adbe4bc58",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1530,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "04b9183b020e6928",
+        "type": "function",
+        "z": "b283f038.b3cfc",
+        "name": "PositiveSolar?",
+        "func": "if (msg.payload >0){\n    return { payload:1, topic:\"SolarPositive\" }\n} else {\n    return { payload:0, topic:\"SolarPositive\" }\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1560,
+        "y": 20,
+        "wires": [
+            [
+                "2ea59c6291bd111c"
+            ]
+        ]
+    },
+    {
+        "id": "2ea59c6291bd111c",
+        "type": "delay",
+        "z": "b283f038.b3cfc",
+        "name": "1/s",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1750,
+        "y": 20,
+        "wires": [
+            [
+                "d27c6a22d0ff1a02",
+                "91b7e87dfb8b568b"
+            ]
+        ]
+    },
+    {
+        "id": "2aa8ac72461dc409",
+        "type": "inject",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 1750,
+        "y": 100,
+        "wires": [
+            [
+                "9408b0228e222cd6"
+            ]
+        ]
+    },
+    {
+        "id": "ea08af37afa8d5b0",
+        "type": "inject",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 1750,
+        "y": 60,
+        "wires": [
+            [
+                "9408b0228e222cd6"
+            ]
+        ]
+    },
+    {
+        "id": "91b7e87dfb8b568b",
+        "type": "combine-logic",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "topic": "",
+        "operator": "and",
+        "defer": 250,
+        "timeout": 0,
+        "distinction": "topic",
+        "x": 1980,
+        "y": 120,
+        "wires": [
+            [
+                "e04c1af44688a55c",
+                "4770b1eb06b22549"
+            ]
+        ]
+    },
+    {
+        "id": "4770b1eb06b22549",
+        "type": "change",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "true",
+                "fromt": "bool",
+                "to": "1",
+                "tot": "num"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "false",
+                "fromt": "bool",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1980,
+        "y": 200,
+        "wires": [
+            [
+                "01e6f06aac2ec83e",
+                "49b5e9d63e529424"
+            ]
+        ]
+    },
+    {
+        "id": "01e6f06aac2ec83e",
+        "type": "rbe",
+        "z": "b283f038.b3cfc",
+        "name": "On Change",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": false,
+        "property": "payload",
+        "topi": "topic",
+        "x": 2170,
+        "y": 320,
+        "wires": [
+            [
+                "c1f73c47.750f2"
+            ]
+        ]
+    },
+    {
+        "id": "49b5e9d63e529424",
+        "type": "switch",
+        "z": "b283f038.b3cfc",
+        "name": "Forward if 1",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2170,
+        "y": 360,
+        "wires": [
+            [
+                "c1f73c47.750f2"
+            ]
+        ]
+    },
+    {
+        "id": "6ee6aa1da660984f",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 2350,
+        "y": 280,
         "wires": []
     }
 ]
