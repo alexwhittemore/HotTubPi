@@ -438,7 +438,8 @@
         "wires": [
             [
                 "917c3c51.4a074",
-                "ddccd0ae.6687"
+                "ddccd0ae.6687",
+                "b4761a8dd5b19f8b"
             ]
         ]
     },
@@ -1156,6 +1157,7 @@
         "name": "Manage Relay Output",
         "func": "// Turn off and Disable relay if failure counter is high\nif (msg.count >= 10) {\n    flow.set(\"relay-enabled\", false)\n    return { payload:0 };\n}\n// If temperature sensing is valid, re-enable relay, but don't change value\nif (msg.reset) {\n    flow.set(\"relay-enabled\", true)\n    return\n}\n// If the message is from the Propane heater, turn on or off appropriately.\nif (msg.topic == \"propaneHeater\") {\n    if (msg.payload == \"on\" &&\n        flow.get(\"relay-enabled\") &&\n        flow.get(\"relay-enabled-blanking\"))\n    {\n        msg.payload = 1\n        return msg;\n    } else {\n        msg.payload = 0\n        return msg;\n    }\n}\n// Otherwise, do nothing.",
         "outputs": 1,
+        "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -1474,7 +1476,8 @@
                 "891fbdcf.25db7",
                 "4c330bf4.2b3cf4",
                 "aed2ae8.87e775",
-                "4804483fc8c3b376"
+                "4804483fc8c3b376",
+                "669656babb38c907"
             ],
             [
                 "ef60201d.6366a",
@@ -1734,7 +1737,9 @@
                 "1433cc39.acc8c4",
                 "8df76e74.54b07",
                 "60a7152f.263cdc",
-                "ade04ba4.cfccb8"
+                "ade04ba4.cfccb8",
+                "59ac43341d1a89b9",
+                "8e09479cdefaa57e"
             ]
         ]
     },
@@ -1800,7 +1805,7 @@
         "seg1": "-3",
         "seg2": "3",
         "x": 2640,
-        "y": 760,
+        "y": 840,
         "wires": []
     },
     {
@@ -1842,7 +1847,7 @@
         "useDifferentColor": false,
         "className": "",
         "x": 2640,
-        "y": 800,
+        "y": 880,
         "wires": [
             []
         ]
@@ -1874,7 +1879,8 @@
         "name": "Delta Since Last",
         "func": "// If the current message value is new and the delta is large enough, save it and emit\n// dVal/dt\n\n// If the calculated heating rate is above this value, suppress output and wait for a new datapoint.\n// Set this to 0 for no filtering.\nvar suppressAboveRate = 16\n\n// Retrieve the last known temperature and its timestamp\nvar lastTemp = flow.get(\"last-temp\")\nvar lastTime = flow.get(\"last-time\")\n//node.warn(\"lastTemp: \" + lastTemp)\n//node.warn(\"lastTime: \" + lastTime)\n\n// Set the current temp and timestamp, and update old values.\nvar thisTemp = msg.payload\nvar thisTime = new Date()\n//node.warn(\"thisTemp: \"+ thisTemp)\n//node.warn(\"thisTime: \"+ thisTime)\n\n// Initial condition: if lastTemp is undefined, set it.\nif (typeof lastTemp == 'undefined'){\n    lastTemp = thisTemp\n    lastTime = thisTime\n    flow.set(\"last-temp\", thisTemp)\n    flow.set(\"last-time\", thisTime)\n}\n\n// ONLY proceed with calc and update stored values IF the current temp is different from the last one.\n// Set number in this line to the deadband width. For instance, >0 means \"measure on any temp difference\"\n// >.28 means \"measure only if the temp has moved two full LSBs or more.\"\n//node.warn(\"thisTemp - lastTemp: \"+ (thisTemp-lastTemp))\n// Also enter if last temp is undefined, to catch the initial case.\nif ((Math.abs(thisTemp - lastTemp) > 0.28)||(lastTemp === undefined)){\n    \n    var timeDeltaSeconds = null\n    try {\n        timeDeltaSeconds = (thisTime.getTime() - lastTime.getTime())/1000\n        tempDelta = thisTemp - lastTemp\n        var degreesPerHour = (tempDelta/timeDeltaSeconds) * 3600\n        // Weird behavior - doing it with .toFixed() seems to produce a string?\n        //degreesPerHour = degreesPerHour.toFixed(2)\n        degreesPerHour = Math.round(degreesPerHour*100)/100\n        //node.warn(\"Degrees per hour: \" + degreesPerHour)\n        \n        // Wait for a new datapoint if the calculated heating rate is suspiciously high.\n        if (degreesPerHour < suppressAboveRate){\n            flow.set(\"last-temp\", thisTemp)\n            flow.set(\"last-time\", thisTime)\n            var newMsg = { payload: degreesPerHour };\n            return newMsg;\n        }\n    } catch (e) {\n        \n    }\n}\n\n\n\n\n\n// Turn off and Disable relay if failure counter is high\n//if (msg.count >= 10) {\n//    flow.set(\"relay-enabled\", false)\n//    return { payload:0 };\n//}\n// If temperature sensing is valid, re-enable relay, but don't change value\n//if (msg.reset) {\n//    flow.set(\"relay-enabled\", true)\n//    return\n//}\n// If the message is from the Propane heater, turn on or off appropriately.\n//if (msg.topic == \"propaneHeater\") {\n//    if (msg.payload.currentHeaterStatus == \"on\" &&\n//        flow.get(\"relay-enabled\"))\n//    {\n//        return { payload:1 };\n//    } else {\n//        return { payload:0 };\n//    }\n//}\n// Otherwise, do nothing.",
         "outputs": 1,
-        "noerr": 0,
+        "timeout": "",
+        "noerr": 2,
         "initialize": "",
         "finalize": "",
         "libs": [],
@@ -1951,8 +1957,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 910,
-        "y": 480,
+        "x": 930,
+        "y": 440,
         "wires": []
     },
     {
@@ -2359,7 +2365,7 @@
         "type": "function",
         "z": "b283f038.b3cfc",
         "name": "Enable between 7am to 9am",
-        "func": "// If upstream (the heater) says turn on, then turn on.\n\nif (msg.payload == 1) {\n    return msg\n} else {\n    // Heater doesn't want us on, but check the time of day to see if we should override\n    // Get current time\n    var d=new Date();\n    var hour = d.getHours();\n    if (hour>=7 && hour <9){\n        return { payload:0 }; // Disabled for now while I work on solar\n        return { payload:1 };\n    } else {\n        return { payload:0 }\n    }\n}\n\n\n\n\n\n\n\n// if (msg.count >= 10) {\n//     flow.set(\"relay-enabled\", false)\n//     return { payload:0 };\n// }\n// // If temperature sensing is valid, re-enable relay, but don't change value\n// if (msg.reset) {\n//     flow.set(\"relay-enabled\", true)\n//     return\n// }\n// // If the message is from the Propane heater, turn on or off appropriately.\n// if (msg.topic == \"propaneHeater\") {\n//     if (msg.payload == \"on\" &&\n//         flow.get(\"relay-enabled\") &&\n//         flow.get(\"relay-enabled-blanking\"))\n//     {\n//         return { payload:1 };\n//     } else {\n//         return { payload:0 };\n//     }\n// }\n// Otherwise, do nothing.",
+        "func": "// If upstream (the heater) says turn on, then turn on.\n\nif (msg.payload == 1) {\n    return msg\n} else {\n    // Heater doesn't want us on, but check the time of day to see if we should override\n    // Get current time\n    var d=new Date();\n    var hour = d.getHours();\n    if (hour>=7 && hour <9){\n        //return { payload:0 }; // Uncomment to let the scheduled cleaning happen\n        return { payload:1 };\n    } else {\n        return { payload:0 }\n    }\n}\n\n\n\n\n\n\n\n// if (msg.count >= 10) {\n//     flow.set(\"relay-enabled\", false)\n//     return { payload:0 };\n// }\n// // If temperature sensing is valid, re-enable relay, but don't change value\n// if (msg.reset) {\n//     flow.set(\"relay-enabled\", true)\n//     return\n// }\n// // If the message is from the Propane heater, turn on or off appropriately.\n// if (msg.topic == \"propaneHeater\") {\n//     if (msg.payload == \"on\" &&\n//         flow.get(\"relay-enabled\") &&\n//         flow.get(\"relay-enabled-blanking\"))\n//     {\n//         return { payload:1 };\n//     } else {\n//         return { payload:0 };\n//     }\n// }\n// Otherwise, do nothing.",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -2529,8 +2535,9 @@
             [
                 "25366bdf9228468b",
                 "39b13a2c.0f2ed6",
+                "e3dc1971d7fd5de3",
                 "1d6459adfd551ed7",
-                "e3dc1971d7fd5de3"
+                "4804483fc8c3b376"
             ]
         ]
     },
@@ -2682,12 +2689,10 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1140,
-        "y": 20,
+        "x": 1100,
+        "y": 60,
         "wires": [
-            [
-                "4804483fc8c3b376"
-            ]
+            []
         ]
     },
     {
@@ -2757,7 +2762,7 @@
         "type": "function",
         "z": "b283f038.b3cfc",
         "name": "PositiveSolar?",
-        "func": "if (msg.payload >0){\n    return { payload:1, topic:\"SolarPositive\" }\n} else {\n    return { payload:0, topic:\"SolarPositive\" }\n}",
+        "func": "// Send a 1 (start condition) if the excess temp is over 10F\n// Send a 0 (stop condition) if the excess temp is under 1F\n// Otherwise, do nothing, which is fine because we want to either stay on or stay off.\nif (msg.payload>10){\n    return { payload:1, topic:\"SolarPositive\" }\n} else if (msg.payload<1) {\n    return { payload:0, topic:\"SolarPositive\" }\n}",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2973,5 +2978,279 @@
         "x": 2350,
         "y": 280,
         "wires": []
+    },
+    {
+        "id": "f20008e0eee96751",
+        "type": "rate",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "inputField": "payload",
+        "inputFieldType": "msg",
+        "outputField": "rate",
+        "outputFieldType": "msg",
+        "timestampField": "timestamp",
+        "timestampFieldType": "msg",
+        "ratePeriod": "3600000",
+        "x": 1810,
+        "y": 720,
+        "wires": [
+            [
+                "3cdf22d0d115b16e",
+                "5fa288e35276ef24"
+            ]
+        ]
+    },
+    {
+        "id": "3cdf22d0d115b16e",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1950,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "59ac43341d1a89b9",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1210,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "8e09479cdefaa57e",
+        "type": "rbe",
+        "z": "b283f038.b3cfc",
+        "name": "change only",
+        "func": "deadbandEq",
+        "gap": "0.20",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 1670,
+        "y": 720,
+        "wires": [
+            [
+                "f20008e0eee96751"
+            ]
+        ]
+    },
+    {
+        "id": "40fb7d47615df6f4",
+        "type": "ui_chart",
+        "z": "b283f038.b3cfc",
+        "name": "0.33 degree delta rate",
+        "group": "b91905fa.f52fe8",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "label": "0.2 deg rate",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-10",
+        "ymax": "16",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 2600,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5fa288e35276ef24",
+        "type": "change",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "rate",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2000,
+        "y": 720,
+        "wires": [
+            [
+                "40fb7d47615df6f4"
+            ]
+        ]
+    },
+    {
+        "id": "669656babb38c907",
+        "type": "combine-bangbang",
+        "z": "b283f038.b3cfc",
+        "upper": "104.5",
+        "lower": "104.3",
+        "invert": true,
+        "name": "No solar over 104.5",
+        "x": 1510,
+        "y": 100,
+        "wires": [
+            [
+                "91b7e87dfb8b568b",
+                "a0175286f6d8d826"
+            ]
+        ]
+    },
+    {
+        "id": "a0175286f6d8d826",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1750,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "b4761a8dd5b19f8b",
+        "type": "ads1x15_i2c",
+        "z": "b283f038.b3cfc",
+        "property": "payload",
+        "name": "ORP",
+        "i2c_device_number": 1,
+        "chip": "0x01",
+        "i2c_address": "0x48",
+        "inputsForChannel": "differential",
+        "singleEndedChannel0": true,
+        "singleEndedChannel1": true,
+        "singleEndedChannel2": true,
+        "singleEndedChannel3": true,
+        "differentialChannel0_1": true,
+        "differentialChannel0_3": false,
+        "differentialChannel1_3": false,
+        "differentialChannel2_3": false,
+        "samplesPerSecond0": "920",
+        "samplesPerSecond1": "860",
+        "progGainAmp": "6144",
+        "x": 350,
+        "y": 1220,
+        "wires": [
+            [
+                "c5d943346bc28716",
+                "5abdba2ef94090f8"
+            ]
+        ]
+    },
+    {
+        "id": "c5d943346bc28716",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload[\"/dev/i2c-1\"].ads1115[\"0x48\"].differential.channel_0_1.miliVolts",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "11abef61b14b587d",
+        "type": "mqtt out",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "topic": "hottub/orp",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5d9ecdcdae1f3406",
+        "x": 720,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "403328e282b91baa",
+        "type": "debug",
+        "z": "b283f038.b3cfc",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 730,
+        "y": 1380,
+        "wires": []
+    },
+    {
+        "id": "5abdba2ef94090f8",
+        "type": "function",
+        "z": "b283f038.b3cfc",
+        "name": "Get mV",
+        "func": "msg.payload = msg.payload[\"/dev/i2c-1\"].ads1115[\"0x48\"].differential.channel_0_1.miliVolts;\nreturn msg",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 1360,
+        "wires": [
+            [
+                "403328e282b91baa"
+            ]
+        ]
     }
 ]
